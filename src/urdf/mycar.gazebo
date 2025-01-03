@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<robot>
+  <gazebo>
+    <plugin
+      filename="gz-sim-mecanum-drive-system"
+      name="gz::sim::systems::MecanumDrive">
+      <!-- Topic for the command input -->
+      <topic>cmd_vel</topic>
+
+      <!-- Wheel joints -->
+      <front_left_joint>front_left_wheel_joint</front_left_joint>
+      <front_right_joint>front_right_wheel_joint</front_right_joint>
+      <back_left_joint>rear_left_wheel_joint</back_left_joint>
+      <back_right_joint>rear_right_wheel_joint</back_right_joint>
+
+      <!-- Wheel parameters -->
+      <wheel_separation>0.3</wheel_separation>
+      <wheelbase>0.3</wheelbase>
+      <wheel_radius>0.1</wheel_radius>
+
+      <!-- Control gains and limits (optional) -->
+      <min_acceleration>-5</min_acceleration>
+      <max_acceleration>5</max_acceleration>
+
+      <!-- Other parameters (optional) -->
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+      <odom_publish_frequency>30</odom_publish_frequency>
+    </plugin>
+
+    <plugin name="gz::sim::systems::OdometryPublisher" filename="gz-sim-odometry-publisher-system">
+      <odom_topic>odom</odom_topic>
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <publish_tf>true</publish_tf>
+      <tf_topic>tf</tf_topic>
+      <odom_publish_frequency>30</odom_publish_frequency>
+      <xyz_offset>0 0 0</xyz_offset>
+      <rpy_offset>0 0 0</rpy_offset>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+        <topic>joint_states</topic>
+        <joint_name>front_left_wheel_joint</joint_name>
+        <joint_name>front_right_wheel_joint</joint_name>
+        <joint_name>rear_left_wheel_joint</joint_name>
+        <joint_name>rear_right_wheel_joint</joint_name>
+    </plugin>
+  </gazebo>
+  
+  
+  <gazebo reference="imu_link">
+    <sensor name="imu" type="imu">
+      <!-- 始终启用IMU传感器 -->
+      <always_on>1</always_on>
+      <!-- 设置IMU数据的更新频率（单位：Hz） -->
+      <update_rate>15</update_rate>
+      <!-- 启用IMU数据可视化功能 -->
+      <visualize>true</visualize>
+      <!-- 设置IMU数据发布的主题名称 -->
+      <topic>imu</topic>
+      <!-- 启用IMU的性能监控 -->
+      <enable_metrics>true</enable_metrics>
+      <!-- 设置IMU传感器的参考坐标系 -->
+      <gz_frame_id>imu_link</gz_frame_id>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="scan_link">
+    <sensor name="gpu_lidar" type="gpu_lidar">
+      <!-- 设置激光雷达数据的更新频率（单位：Hz） -->
+      <update_rate>10</update_rate>
+      <!-- 设置激光雷达数据发布的主题名称 -->
+      <topic>scan</topic>
+      <!-- 设置激光雷达的参考坐标系 -->
+      <gz_frame_id>scan_link</gz_frame_id>
+      <lidar>
+        <scan>
+          <horizontal>
+            <!-- 设置激光雷达水平扫描的样本数量 -->
+            <samples>720</samples>
+            <!-- 设置激光雷达水平角分辨率 -->
+            <resolution>1</resolution>
+            <!-- 设置激光雷达扫描的最小角度（单位：弧度） -->
+            <min_angle>-3.14156</min_angle>
+            <!-- 设置激光雷达扫描的最大角度（单位：弧度） -->
+            <max_angle>3.14156</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <!-- 设置激光雷达的最小探测距离（单位：米） -->
+          <min>0.05</min>
+          <!-- 设置激光雷达的最大探测距离（单位：米） -->
+          <max>10.0</max>
+          <!-- 设置激光雷达的距离分辨率 -->
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+            <!-- 设置激光雷达噪声的类型 -->
+            <type>gaussian</type>
+            <!-- 设置噪声的均值 -->
+            <mean>0.0</mean>
+            <!-- 设置噪声的标准差 -->
+            <stddev>0.01</stddev>
+        </noise>
+        <!-- 设置激光雷达的参考坐标系 -->
+        <frame_id>scan_link</frame_id>
+      </lidar>
+      <!-- 始终启用激光雷达 -->
+      <always_on>1</always_on>
+      <!-- 启用激光雷达数据的可视化功能 -->
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="base_link">
+    <sensor name="navsat" type="navsat">
+      <!-- 始终启用GPS传感器 -->
+      <always_on>1</always_on>
+      <!-- 设置GPS数据的更新频率（单位：Hz） -->
+      <update_rate>1</update_rate>
+      <!-- 设置GPS数据发布的主题名称 -->
+      <topic>navsat</topic>
+      <!-- 设置GPS传感器的参考坐标系 -->
+      <gz_frame_id>base_link</gz_frame_id>
+    </sensor>
+  </gazebo>
+
+
+</robot>
