@@ -1,32 +1,15 @@
+<<<<<<< HEAD
+build/
+install/
+mogi_trajectory_server/
+=======
 # Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+/build/
+/install/
+**/.DS_Store
+**/Thumbs.db
+>>>>>>> 25702d814b20ab0248c2591ba6788fb9a5809b58
+log/
+src/build/
+src/install/
+src/log/
